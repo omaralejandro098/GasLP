@@ -1,0 +1,7 @@
+{
+  "name": "Fronted",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
