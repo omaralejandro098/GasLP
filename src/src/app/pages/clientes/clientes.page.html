@@ -1,0 +1,223 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Clientes</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="setOpen(true)">
+        <ion-icon slot="icon-only" name="add-circle-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Clientes</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- LISTA DE CLIENTES -->
+  <ion-list *ngIf="clientes.length > 0; else noClientes">
+    <ion-item-sliding *ngFor="let client of clientes">
+      <!-- Muestra la información del cliente usando las variables del TS -->
+      <ion-item (click)="setOpenCliente(true, client)" button detail>
+        <ion-label>
+          <!-- Se usan 'nombres' y 'apellidos' tal como están en el TS -->
+          <h2>{{ client.nombre }} {{ client.apellido }}</h2>
+          <p>Teléfono: {{ client.telefono }}</p>
+          <p>
+            <!-- Se asume que getClientes fusiona los datos del domicilio para la vista rápida -->
+            Dirección: {{ client.calle }} #{{ client.numero }}, {{ client.colonia }}
+          </p>
+        </ion-label>
+      </ion-item>
+
+      <ion-item-options side="end">
+        <!-- 🔑 Se usa client.id para la eliminación -->
+        <ion-item-option color="danger" (click)="deleteClientes(client.id)">
+          <ion-icon slot="icon-only" name="trash"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+
+  <ng-template #noClientes>
+    <div class="ion-padding ion-text-center">
+      <ion-icon name="people-outline" size="large"></ion-icon>
+      <p>No hay clientes registrados.</p>
+      <ion-button (click)="setOpen(true)">Crear Nuevo Cliente</ion-button>
+    </div>
+  </ng-template>
+
+  <div *ngIf="clientes.length === 0 && token" class="ion-text-center ion-padding">
+    <ion-spinner name="crescent"></ion-spinner>
+    <p>Cargando clientes...</p>
+  </div>
+
+  <!-- MODAL DE CREACIÓN (NUEVO CLIENTE) -->
+  <ion-modal
+    [isOpen]="isModalOpen"
+    (ionModalWillDismiss)="onWillDismiss($event)"
+    [initialBreakpoint]="0.9"
+    [breakpoints]="[0, 0.9]"
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="setOpen(false)">Cancelar</ion-button>
+          </ion-buttons>
+          <ion-title>Nuevo Cliente</ion-title>
+          <ion-buttons slot="end">
+            <!-- Llama a createCliente() con todos los datos del formulario -->
+            <ion-button (click)="createCliente()" [strong]="true">Guardar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <ion-list>
+          <!-- CAMPOS DE CLIENTE -->
+          <ion-item>
+            <ion-input
+              label="Nombre"
+              labelPlacement="floating"
+              [(ngModel)]="nombre"
+              required
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+              label="Apellido"
+              labelPlacement="floating"
+              [(ngModel)]="apellido"
+              required
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+              label="Teléfono"
+              labelPlacement="floating"
+              type="tel"
+              [(ngModel)]="telefono"
+              required
+            ></ion-input>
+          </ion-item>
+
+          <ion-item-divider>
+            <ion-label>Dirección</ion-label>
+          </ion-item-divider>
+
+          <!-- CAMPOS DE DOMICILIO -->
+          <ion-item>
+            <ion-input
+              label="Calle"
+              labelPlacement="floating"
+              [(ngModel)]="calle"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+              label="Número"
+              labelPlacement="floating"
+              [(ngModel)]="numero"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+              label="Colonia"
+              labelPlacement="floating"
+              [(ngModel)]="colonia"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-input
+              label="Código Postal (CP)"
+              labelPlacement="floating"
+              type="number"
+              [(ngModel)]="cp"
+            ></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-textarea
+              label="Referencia"
+              labelPlacement="floating"
+              rows="3"
+              [(ngModel)]="referencia"
+            ></ion-textarea>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- MODAL DE DETALLES DEL CLIENTE (VISUALIZACIÓN) -->
+  <ion-modal
+    [isOpen]="isModalClienteOpen"
+    (ionModalWillDismiss)="onWillDismiss($event)"
+    [initialBreakpoint]="0.9"
+    [breakpoints]="[0, 0.9]"
+  >
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="setOpenCliente(false)">Cerrar</ion-button>
+          </ion-buttons>
+          <!-- Muestra el nombre del cliente seleccionado -->
+          <ion-title *ngIf="cliente">{{ cliente.nombre }} {{ cliente.apellido }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="goToDetails()">Ver Detalles Completos</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding" *ngIf="cliente">
+        <ion-list lines="full">
+          <ion-list-header>
+            <ion-label>Información de Contacto</ion-label>
+          </ion-list-header>
+
+          <ion-item>
+            <ion-label>Nombre Completo</ion-label>
+            <ion-text slot="end">{{ cliente.nombre }} {{ cliente.apellido }}</ion-text>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Teléfono</ion-label>
+            <ion-text slot="end">{{ cliente.telefono }}</ion-text>
+          </ion-item>
+
+          <ion-list-header>
+            <ion-label>Dirección</ion-label>
+          </ion-list-header>
+
+          <!-- Se asume que getClienteById carga los datos de dirección en el objeto 'cliente' -->
+          <ion-item>
+            <ion-label>Calle y Número</ion-label>
+            <ion-text slot="end">{{ cliente.calle }} #{{ cliente.numero }}</ion-text>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Colonia</ion-label>
+            <ion-text slot="end">{{ cliente.colonia }}</ion-text>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Código Postal</ion-label>
+            <ion-text slot="end">{{ cliente.cp }}</ion-text>
+          </ion-item>
+
+          <ion-item>
+            <ion-label class="ion-text-wrap">Referencia</ion-label>
+            <ion-text slot="end" class="ion-text-wrap">{{ cliente.referencia || 'N/A' }}</ion-text>
+          </ion-item>
+        </ion-list>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+</ion-content>

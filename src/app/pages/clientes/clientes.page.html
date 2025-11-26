@@ -1,0 +1,444 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Clientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-grid fixed>
+    <ion-row>
+      <ion-col size="6">
+        <ion-accordion-group>
+          <ion-accordion value="first">
+            <ion-item slot="header" color="light">
+              <ion-label>Clientes</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <!-- ===================== LISTA DE CLIENTES ===================== -->
+              <ion-list>
+                <ion-toolbar>
+                  <ion-searchbar placeholder="Buscar cliente por teléfono" debounce="300" inputmode="tel" maxlength="10"
+                    (ionInput)="getClientesByTelefono($event)"></ion-searchbar>
+                </ion-toolbar>
+                <ion-item *ngFor="let cliente of clientes">
+                  <ion-label>
+                    <h2>{{ cliente.nombre }} {{ cliente.apellidos }}</h2>
+                    <p>📞 {{ cliente.telefono }}</p>
+                  </ion-label>
+
+                  <ion-button fill="outline" color="primary" (click)="verDomicilios(cliente)">
+                    Domicilios
+                  </ion-button>
+
+                  <ion-button color="tertiary" (click)="verservicios(cliente)">
+                    Servicios
+                  </ion-button>
+
+                  <ion-button fill="clear" (click)="editarcliente(cliente)">Editar</ion-button>
+
+                  <ion-button color="danger" (click)="eliminarcliente(cliente.documentId)">
+                    Eliminar
+                  </ion-button>
+                </ion-item>
+              </ion-list>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+      <ion-col size="6">
+        <ion-accordion-group>
+          <ion-accordion value="second">
+            <ion-item slot="header" color="light">
+              <ion-label>Pedidos registrados</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-card *ngFor="let s of servicios1">
+                <ion-card-header>
+                  <p>Nombre del cliente :{{s.cliente.nombre}}</p>
+                  <p>Estado de pedido: {{s.estado_servicio.tipo}}</p>
+                  <p>Tipo de servicio: {{s.tipo_servicio.nombre}}</p>
+                  <p>Nota: {{s.nota}}</p>
+                  <p>Observaciones:{{s.observacion}}</p>
+                  <ion-card-subtitle *ngFor="let d of s.cliente.domicilios">Calle: {{d.calle}} Colonia: {{d.colonia}}
+                    Codigo
+                    postal:
+                    {{d.cp}}</ion-card-subtitle>
+                </ion-card-header>
+                <ion-button expand="block" fill="clear" shape="round" (click)="abrirModalAsignarServicio(s)">
+                  Asignar
+                </ion-button>
+
+              </ion-card>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+      <ion-col size="6">
+        <ion-accordion-group>
+          <ion-accordion value="second">
+            <ion-item slot="header" color="light">
+              <ion-label>Pedidos asignados</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-card *ngFor="let s of serviciosasignados">
+                <ion-card-header>
+                  <p>Nombre del cliente :{{s.cliente.nombre}}</p>
+                  <p>Estado de pedido: {{s.estado_servicio.tipo}}</p>
+                  <p>Tipo de servicio: {{s.tipo_servicio.nombre}}</p>
+                  <p>Nota: {{s.nota}}</p>
+                  <p>Observaciones:{{s.observacion}}</p>
+                  <ion-card-subtitle *ngFor="let d of s.cliente.domicilios">Calle: {{d.calle}} Colonia: {{d.colonia}}
+                    Codigo
+                    postal:
+                    {{d.cp}}</ion-card-subtitle>
+                </ion-card-header>
+                <ion-button expand="block" fill="clear" shape="round" (click)="marcarComoSurtido(s)">
+                  Surtido
+                </ion-button>
+
+                <ion-button expand="block" fill="clear" shape="round">
+                  Cancelar
+                </ion-button>
+
+
+              </ion-card>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+      <ion-col size="6">
+        <ion-accordion-group>
+          <ion-accordion value="second">
+            <ion-item slot="header" color="light">
+              <ion-label>Pedidos programado</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-card *ngFor="let s of serviciosprogramados">
+                <ion-card-header>
+                  <p>Nombre del cliente :{{s.cliente.nombre}}</p>
+                  <p>Estado de pedido: {{s.estado_servicio.tipo}}</p>
+                  <p>Tipo de servicio: {{s.tipo_servicio.nombre}}</p>
+                  <p>Nota: {{s.nota}}</p>
+                  <p>Observaciones:{{s.observacion}}</p>
+                  <ion-card-subtitle *ngFor="let d of s.cliente.domicilios">Calle: {{d.calle}} Colonia: {{d.colonia}}
+                    Codigo
+                    postal:
+                    {{d.cp}}</ion-card-subtitle>
+                </ion-card-header>
+                <ion-button expand="block" fill="clear" shape="round" (click)="abrirModalAsignarServicio(s)">
+                  Asignar
+                </ion-button>
+
+              </ion-card>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+      <ion-col size="6">
+        <ion-accordion-group>
+          <ion-accordion value="second">
+            <ion-item slot="header" color="light">
+              <ion-label>Pedidos surtidos</ion-label>
+            </ion-item>
+            <div class="ion-padding" slot="content">
+              <ion-card *ngFor="let s of serviciossurtidos">
+                <ion-card-header>
+                  <p>Nombre del cliente :{{s.cliente.nombre}}</p>
+                  <p>Estado de pedido: {{s.estado_servicio.tipo}}</p>
+                  <p>Tipo de servicio: {{s.tipo_servicio.nombre}}</p>
+                  <p>Nota: {{s.nota}}</p>
+                  <p>Observaciones:{{s.observacion}}</p>
+                  <ion-card-subtitle *ngFor="let d of s.cliente.domicilios">Calle: {{d.calle}} Colonia: {{d.colonia}}
+                    Codigo
+                    postal:
+                    {{d.cp}}</ion-card-subtitle>
+                </ion-card-header>
+              </ion-card>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <!-- ===================== MODAL: ASIGNAR PEDIDO ===================== -->
+  <ion-modal [isOpen]="isModalAsignarServicioOpen" (willDismiss)="cerrarModalAsignarServicio()"
+    cssClass="modal-cliente">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Asignar Servicios</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModalAsignarServicio()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label>Ruta</ion-label>
+          <ion-select [(ngModel)]="servicio.ruta">
+            <ion-select-option *ngFor="let ruta of rutas" [value]="ruta.documentId">
+              {{ ruta.nombre }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Estado del Servicio</ion-label>
+          <ion-select [(ngModel)]="servicio.estado_servicio" (ionChange)="verificarEstado($event)">
+            <ion-select-option *ngFor="let estado of estados_servicio" [value]="estado.id">
+              {{ estado.tipo }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- Fecha solo si está programado -->
+        <ion-item *ngIf="mostrarFechaProgramado">
+          <ion-label position="stacked">Fecha Programado</ion-label>
+          <ion-datetime presentation="date" [(ngModel)]="servicio.fecha_programado" placeholder="Seleccionar fecha">
+          </ion-datetime>
+        </ion-item>
+        <ion-item>
+          <ion-label position="floating">Observación</ion-label>
+          <ion-input [(ngModel)]="servicio.observacion"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Nota</ion-label>
+          <ion-input [(ngModel)]="servicio.nota"></ion-input>
+        </ion-item>
+
+        <ion-button expand="full" color="success" (click)="asignarServicio()">
+          Asignar Pedido
+        </ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+  <!-- ===================== MODAL: AGREGAR CLIENTE ===================== -->
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="cerrarModal()" cssClass="modal-cliente">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="primary">
+          <ion-title>Agregar Cliente</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModal()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="floating">Nombre</ion-label>
+          <ion-input [(ngModel)]="nombre"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Apellidos</ion-label>
+          <ion-input [(ngModel)]="apellidos"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Teléfono</ion-label>
+          <ion-input [(ngModel)]="telefono"></ion-input>
+        </ion-item>
+
+        <ion-button expand="full" (click)="guardarcliente()">Guardar Cliente</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+  <!-- ===================== MODAL: DOMICILIOS ===================== -->
+  <ion-modal [isOpen]="cliente && domicilios.length >= 0" *ngIf="isModalDomicilioOpen"
+    (willDismiss)="cerrarModalDomicilio()" cssClass="modal-cliente">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="secondary">
+          <ion-title>Domicilios de {{ cliente?.nombre }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModalDomicilio()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+
+        <!-- Lista de domicilios -->
+        <ion-list *ngIf="domicilios.length > 0; else sinDomicilios">
+          <ion-item *ngFor="let dom of domicilios" (click)="seleccionarDomicilio(dom)">
+            <ion-label>
+              <h2>{{ dom.calle }} #{{ dom.numero }}</h2>
+              <p>{{ dom.colonia }}, CP {{ dom.cp }}</p>
+              <p><strong>Referencia:</strong> {{ dom.referencia || 'Sin referencia' }}</p>
+            </ion-label>
+            <ion-button color="danger" (click)="deletedomicilio(dom.documentId)">
+              Eliminar
+            </ion-button>
+            <ion-icon *ngIf="domicilioSeleccionado?.documentId === dom.documentId" name="checkmark-circle"
+              color="success" slot="end">
+            </ion-icon>
+          </ion-item>
+        </ion-list>
+
+        <ng-template #sinDomicilios>
+          <ion-text color="medium">
+            <p class="ion-text-center">No hay domicilios registrados para este cliente.</p>
+          </ion-text>
+        </ng-template>
+
+        <ion-button expand="full" color="secondary" (click)="abrirModalAgregarDomicilio()">
+          Agregar Domicilio
+        </ion-button>
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+  <!-- ===================== MODAL: AGREGAR NUEVO DOMICILIO ===================== -->
+  <ion-modal [isOpen]="isModalAgregarDomicilioOpen" (willDismiss)="cerrarModalAgregarDomicilio()"
+    cssClass="modal-cliente">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="secondary">
+          <ion-title>Agregar Domicilio</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModalAgregarDomicilio()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <ion-item>
+          <ion-label position="floating">Calle</ion-label>
+          <ion-input [(ngModel)]="nuevaCalle"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Número</ion-label>
+          <ion-input [(ngModel)]="nuevoNumero"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Colonia</ion-label>
+          <ion-input [(ngModel)]="nuevaColonia"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Código Postal</ion-label>
+          <ion-input [(ngModel)]="nuevoCP"></ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Referencia</ion-label>
+          <ion-input [(ngModel)]="nuevaReferencia"></ion-input>
+        </ion-item>
+
+        <ion-button expand="full" color="success" (click)="guardarDomicilio()">Guardar Domicilio</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+  <!-- ===================== MODAL: SERVICIOS ===================== -->
+  <ion-modal [isOpen]="isModalServiciosOpen" (willDismiss)="cerrarModalServicios()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="tertiary">
+          <ion-title>Servicios de {{ cliente?.nombre }}</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModalServicios()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+
+        <ion-list *ngIf="servicios.length > 0; else sinServicios">
+          <ion-item *ngFor="let servicio of servicios">
+            <ion-label>
+              <h2>{{ servicio.tipo_servicio?.nombre || 'Servicio sin tipo' }}</h2>
+              <p><strong>Estado:</strong> {{ servicio.estado_servicio?.tipo || 'Sin estado' }}</p>
+              <p><strong>Ruta:</strong> {{ servicio.ruta?.nombre || 'Sin ruta' }}</p>
+              <p><strong>Nota:</strong> {{ servicio.nota || 'Sin nota' }}</p>
+              <p><strong>Observación:</strong> {{ servicio.observacion || 'Sin observación' }}</p>
+              <p><strong>Domicilio:</strong> {{ servicio.domicilio?.calle }} #{{ servicio.domicilio?.numero }},
+                {{ servicio.domicilio?.colonia }} (CP {{ servicio.domicilio?.cp }})
+              </p>
+              <p><strong>Referencia:</strong> {{ servicio.domicilio?.referencia || 'Sin referencia' }}</p>
+              <p><strong>Fecha de creación:</strong> {{ servicio.createdAt | date:'medium' }}</p>
+            </ion-label>
+          </ion-item>
+        </ion-list>
+
+        <ng-template #sinServicios>
+          <ion-text color="medium">
+            <p class="ion-text-center">No hay servicios registrados para este cliente.</p>
+          </ion-text>
+        </ng-template>
+
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  <ion-modal [isOpen]="isModalFormularioServicioOpen" (willDismiss)="cerrarModalFormularioServicio()"
+    cssClass="modal-cliente">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar color="tertiary">
+          <ion-title>Levantamiento de Servicio</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="cerrarModalFormularioServicio()">Cerrar</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <!-- Domicilio seleccionado -->
+        <ion-item>
+          <ion-label>Domicilio </ion-label>
+          <ion-input [(ngModel)]="domicilioFormulario.calle" disabled>
+
+          </ion-input>
+        </ion-item>
+
+        <!-- Ruta -->
+        <ion-item>
+          <ion-label>Ruta</ion-label>
+          <ion-select [(ngModel)]="servicio.ruta">
+            <ion-select-option *ngFor="let ruta of rutas" [value]="ruta.id">{{ ruta.nombre }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <!-- Tipo de Servicio -->
+        <ion-item>
+          <ion-label>Tipo de Servicio</ion-label>
+          <ion-select [(ngModel)]="servicio.tipo_servicio">
+            <ion-select-option *ngFor="let tipo of tipos_servicio" [value]="tipo.id">{{ tipo.nombre
+              }}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-label>Estado del pedido</ion-label>
+          <ion-select [(ngModel)]="servicio.estado_servicio">
+            <ion-select-option *ngFor="let estado of estados_servicio" [value]="estado.documentId">
+              {{ estado.tipo }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+        <!-- Observación -->
+        <ion-item>
+          <ion-label position="floating">Observación</ion-label>
+          <ion-input [(ngModel)]="servicio.observacion"></ion-input>
+        </ion-item>
+
+        <!-- Nota -->
+        <ion-item>
+          <ion-label position="floating">Nota</ion-label>
+          <ion-input [(ngModel)]="servicio.nota"></ion-input>
+        </ion-item>
+        <ion-button expand="full" color="success" (click)="guardarServicio()">Guardar Servicio</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+
+</ion-content>

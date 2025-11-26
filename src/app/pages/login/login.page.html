@@ -1,0 +1,46 @@
+<ion-header [translucent]="true">
+  <ion-toolbar color="primary">
+    <ion-title class="ion-text-center">🔐 Login</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="login-background">
+
+  <div class="login-container">
+    <ion-card class="login-card">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">Bienvenido</ion-card-title>
+        <ion-card-subtitle class="ion-text-center">Inicia sesión para continuar</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <ion-item lines="none">
+          <ion-icon name="person-circle-outline" slot="start"></ion-icon>
+          <ion-input [(ngModel)]="identifier" type="text" placeholder="Usuario o Correo"></ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-icon name="lock-closed-outline" slot="start"></ion-icon>
+          <ion-input [(ngModel)]="password" type="password" placeholder="Contraseña"></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" shape="round" color="primary" (click)="login()">
+          Entrar
+        </ion-button>
+
+        <ion-button
+          expand="block"
+          fill="outline"
+          shape="round"
+          
+          href="http://localhost:1337/api/connect/google">
+          <ion-icon name="logo-google" slot="start"></ion-icon>
+          Iniciar con Google
+        </ion-button>
+
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>
