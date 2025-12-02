@@ -193,7 +193,8 @@
         <!-- Fecha solo si está programado -->
         <ion-item *ngIf="mostrarFechaProgramado">
           <ion-label position="stacked">Fecha Programado</ion-label>
-          <ion-datetime presentation="date" [(ngModel)]="servicio.fecha_programado" placeholder="Seleccionar fecha">
+          <ion-datetime presentation="date-time" [(ngModel)]="servicio.fecha_programado"
+            placeholder="Seleccionar fecha y hora">
           </ion-datetime>
         </ion-item>
         <ion-item>
