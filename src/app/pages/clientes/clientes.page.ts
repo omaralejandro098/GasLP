@@ -639,17 +639,24 @@ export class ClientesPage implements OnInit {
       await alert.present();
       return;
     }
-    const data = {
+
+    const data: any = {
       ruta: this.servicio.ruta,
       estado_servicio: this.servicio.estado_servicio,
       observacion: this.servicio.observacion || '',
       nota: this.servicio.nota || '',
     };
+
+    // ⏰ Solo agregar fecha y hora SI el servicio es programado
+    if (this.mostrarFechaProgramado && this.servicio.fecha_programado) {
+      // fecha_programado ya trae fecha y hora en formato ISO
+      data.fecha_programado = this.servicio.fecha_programado;
+      console.log("📅 Fecha y hora programada incluida:", data.fecha_programado);
+    }
+
     console.log(' Enviando datos al backend:', data);
+
     try {
-
-
-
       console.log('ID del servicio a editar:', this.servicio.documentId);
 
       const response = await this.apiser.editarservicio(this.servicio.documentId, data);
@@ -674,6 +681,7 @@ export class ClientesPage implements OnInit {
       await alert.present();
     }
   }
+
   cerrarModalFormularioServicio() {
     this.isModalFormularioServicioOpen = false;
     this.servicio = {
