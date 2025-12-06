@@ -51,4 +51,12 @@ export class Servicios {
       headers: this.getAuthHeaders()
     });
   }
+
+  async verserviciocancelados() {
+  return await axios.get(`${this.apiUrl}/servicioscancelados`, {
+    headers: this.getAuthHeaders()
+  });
+}
+
+  
 }
