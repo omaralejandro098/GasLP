@@ -45,6 +45,36 @@
           </ion-accordion>
         </ion-accordion-group>
       </ion-col>
+
+      <ion-col size="6">
+        <ion-accordion-group>
+          <ion-accordion value="cancelados">
+            <ion-item slot="header" color="light">
+              <ion-label>Pedidos cancelados</ion-label>
+            </ion-item>
+
+            <div class="ion-padding" slot="content">
+              <ion-card *ngFor="let s of servicioscancelados">
+                <ion-card-header>
+                  <p>Nombre del cliente: {{ s.cliente.nombre }}</p>
+                  <p>Estado del pedido: {{ s.estado_servicio.tipo }}</p>
+                  <p>Tipo de servicio: {{ s.tipo_servicio.nombre }}</p>
+                  <p>Nota: {{ s.nota }}</p>
+                  <p>Observaciones: {{ s.observacion }}</p>
+
+                  <ion-card-subtitle *ngFor="let d of s.cliente.domicilios">
+                    Calle: {{ d.calle }} |
+                    Colonia: {{ d.colonia }} |
+                    CP: {{ d.cp }}
+                  </ion-card-subtitle>
+                </ion-card-header>
+              </ion-card>
+            </div>
+          </ion-accordion>
+        </ion-accordion-group>
+      </ion-col>
+
+
       <ion-col size="6">
         <ion-accordion-group>
           <ion-accordion value="second">

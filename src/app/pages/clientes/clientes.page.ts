@@ -42,6 +42,7 @@ export class ClientesPage implements OnInit {
   serviciosasignados: any[] = []
   serviciosprogramados: any[] = []
   serviciossurtidos: any[] = []
+  servicioscancelados: any[] = [];
 
   servicios1: any[] = [];
   // Crear un objeto servicio para trabajar con los datos en el modal
@@ -100,7 +101,8 @@ export class ClientesPage implements OnInit {
     this.verestadoservicio();
     this.verservicioasignados();
     this.verservicioprogramados();
-    this.verserviciossurtidos()
+    this.verserviciossurtidos();
+    this.verserviciocancelados()
   }
 
   // ==================== CLIENTES ====================
@@ -394,12 +396,12 @@ export class ClientesPage implements OnInit {
       console.log('✅ Servicios rutas:', this.rutas);
     } catch (error) {
       console.error('❌ Error cargando rutas:', error);
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Error cargando servicios',
-        buttons: ['OK']
-      });
-      await alert.present();
+      // const alert = await this.alertCtrl.create({
+      //   header: 'Error',
+      //   message: 'Error cargando servicios',
+      //   buttons: ['OK']
+      // });
+      // await alert.present();
     }
   }
   // ==================== Rutas ====================
@@ -410,12 +412,12 @@ export class ClientesPage implements OnInit {
       console.log('✅ Servicios rutas:', this.tipos_servicio);
     } catch (error) {
       console.error('❌ Error cargando rutas:', error);
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Error cargando servicios',
-        buttons: ['OK']
-      });
-      await alert.present();
+      // const alert = await this.alertCtrl.create({
+      //   header: 'Error',
+      //   message: 'Error cargando servicios',
+      //   buttons: ['OK']
+      // });
+      // await alert.present();
     }
   }
   // ==================== Estado Servicio====================
@@ -426,12 +428,12 @@ export class ClientesPage implements OnInit {
       console.log('✅ Servicios rutas:', this.estados_servicio);
     } catch (error) {
       console.error('❌ Error cargando rutas:', error);
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Error cargando servicios',
-        buttons: ['OK']
-      });
-      await alert.present();
+      // const alert = await this.alertCtrl.create({
+      //   header: 'Error',
+      //   message: 'Error cargando servicios',
+      //   buttons: ['OK']
+      // });
+      // await alert.present();
     }
   }
   // ==================== SERVICIOS ====================
@@ -462,12 +464,12 @@ export class ClientesPage implements OnInit {
 
       // Otros errores sí se muestran
       console.error('❌ Error cargando servicios:', error);
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Error cargando servicios',
-        buttons: ['OK']
-      });
-      await alert.present();
+      // const alert = await this.alertCtrl.create({
+      //   header: 'Error',
+      //   message: 'Error cargando servicios',
+      //   buttons: ['OK']
+      // });
+      // await alert.present();
     }
   }
 
@@ -779,14 +781,39 @@ export class ClientesPage implements OnInit {
 
     } catch (error) {
       console.error('❌ Error cargando servicios:', error);
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Error cargando servicios',
-        buttons: ['OK']
-      });
-      await alert.present();
+      // const alert = await this.alertCtrl.create({
+      //   header: 'Error',
+      //   message: 'Error cargando servicios',
+      //   buttons: ['OK']
+      // });
+      // await alert.present();
     }
   }
+
+  async verserviciocancelados() {
+  try {
+    const response: any = await this.apiser.verserviciocancelados();
+    console.log("🚫 Servicios cancelados RESPUESTA:", response);
+
+    this.servicioscancelados = response.data?.data || [];
+
+    console.log("🚫 Servicios cancelados:", this.servicioscancelados);
+
+  } catch (error) {
+    console.error("❌ Error cargando servicios cancelados:", error);
+    
+    // const alert = await this.alertCtrl.create({
+    //   header: "Error",
+    //   message: "Error cargando servicios cancelados",
+    //   buttons: ["OK"]
+    // });
+
+    // await alert.present();
+  }
+}
+
+
+  
 
 
 }
