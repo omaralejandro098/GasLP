@@ -97,6 +97,10 @@
                 <ion-button expand="block" fill="clear" shape="round" (click)="abrirModalAsignarServicio(s)">
                   Asignar
                 </ion-button>
+                <ion-button expand="block" fill="clear" color="danger" (click)="cancelarServicio(s)">
+                  Cancelar
+                </ion-button>
+
 
               </ion-card>
             </div>
@@ -126,9 +130,10 @@
                   Surtido
                 </ion-button>
 
-                <ion-button expand="block" fill="clear" shape="round">
+                <ion-button expand="block" fill="clear" color="danger" (click)="cancelarServicio(s)">
                   Cancelar
                 </ion-button>
+
 
 
               </ion-card>
@@ -158,6 +163,10 @@
                 <ion-button expand="block" fill="clear" shape="round" (click)="abrirModalAsignarServicio(s)">
                   Asignar
                 </ion-button>
+                <ion-button expand="block" fill="clear" color="danger" (click)="cancelarServicio(s)">
+                  Cancelar
+                </ion-button>
+
 
               </ion-card>
             </div>
@@ -304,6 +313,7 @@
             <ion-button color="danger" (click)="deletedomicilio(dom.documentId)">
               Eliminar
             </ion-button>
+
             <ion-icon *ngIf="domicilioSeleccionado?.documentId === dom.documentId" name="checkmark-circle"
               color="success" slot="end">
             </ion-icon>
