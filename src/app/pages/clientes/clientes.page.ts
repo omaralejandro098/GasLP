@@ -112,10 +112,10 @@ export class ClientesPage implements OnInit {
       this.clientes = response.data?.data || [];
       console.log('✅ Clientes cargados:', this.clientes);
     } catch (error) {
-      console.error('❌ Error cargando clientes:', error);
+      console.error('❌ // clientes:', error);
       const alert = await this.alertCtrl.create({
         header: 'Error',
-        message: 'Error cargando clientes',
+        message: '// clientes',
         buttons: ['OK']
       });
       await alert.present();
@@ -229,10 +229,10 @@ export class ClientesPage implements OnInit {
       this.domicilios = response.data?.data || [];
       console.log('✅ Domicilios cargados:', this.domicilios);
     } catch (error) {
-      console.error('❌ Error cargando domicilios:', error);
+      console.error('❌ // domicilios:', error);
       const alert = await this.alertCtrl.create({
         header: 'Error',
-        message: 'Error cargando domicilios',
+        message: '// domicilios',
         buttons: ['OK']
       });
       await alert.present();
@@ -395,10 +395,10 @@ export class ClientesPage implements OnInit {
       this.rutas = response.data?.data || [];
       console.log('✅ Servicios rutas:', this.rutas);
     } catch (error) {
-      console.error('❌ Error cargando rutas:', error);
+      console.error('❌ // rutas:', error);
       // const alert = await this.alertCtrl.create({
       //   header: 'Error',
-      //   message: 'Error cargando servicios',
+      //   message: '// servicios',
       //   buttons: ['OK']
       // });
       // await alert.present();
@@ -411,10 +411,10 @@ export class ClientesPage implements OnInit {
       this.tipos_servicio = response.data?.data || [];
       console.log('✅ Servicios rutas:', this.tipos_servicio);
     } catch (error) {
-      console.error('❌ Error cargando rutas:', error);
+      console.error('❌ // rutas:', error);
       // const alert = await this.alertCtrl.create({
       //   header: 'Error',
-      //   message: 'Error cargando servicios',
+      //   message: '// servicios',
       //   buttons: ['OK']
       // });
       // await alert.present();
@@ -427,10 +427,10 @@ export class ClientesPage implements OnInit {
       this.estados_servicio = response.data?.data || [];
       console.log('✅ Servicios rutas:', this.estados_servicio);
     } catch (error) {
-      console.error('❌ Error cargando rutas:', error);
+      console.error('❌ // rutas:', error);
       // const alert = await this.alertCtrl.create({
       //   header: 'Error',
-      //   message: 'Error cargando servicios',
+      //   message: '// servicios',
       //   buttons: ['OK']
       // });
       // await alert.present();
@@ -463,10 +463,10 @@ export class ClientesPage implements OnInit {
       }
 
       // Otros errores sí se muestran
-      console.error('❌ Error cargando servicios:', error);
+      // console.error('❌ // servicios:', error);
       // const alert = await this.alertCtrl.create({
       //   header: 'Error',
-      //   message: 'Error cargando servicios',
+      //   message: '// servicios',
       //   buttons: ['OK']
       // });
       // await alert.present();
@@ -484,13 +484,13 @@ export class ClientesPage implements OnInit {
       console.log('✅ Servicios asignados:', this.serviciosasignados);
 
     } catch (error) {
-      console.error('❌ Error cargando servicios:', error);
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Error cargando servicios',
-        buttons: ['OK']
-      });
-      await alert.present();
+      // console.error('❌ // servicios:', error);
+      // const alert = await this.alertCtrl.create({
+      //   header: 'Error',
+      //   message: '// servicios',
+      //   buttons: ['OK']
+      // });
+      // await alert.present();
     }
   }
   async verservicioprogramados() {
@@ -504,13 +504,13 @@ export class ClientesPage implements OnInit {
       console.log('✅ Servicios asignados:', this.serviciosprogramados);
 
     } catch (error) {
-      console.error('❌ Error cargando servicios:', error);
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Error cargando servicios',
-        buttons: ['OK']
-      });
-      await alert.present();
+      // console.error('❌ // servicios:', error);
+      // const alert = await this.alertCtrl.create({
+      //   header: 'Error',
+      //   message: '// servicios',
+      //   buttons: ['OK']
+      // });
+      // await alert.present();
     }
   }
   async getservicios(documentId: string) {
@@ -519,13 +519,13 @@ export class ClientesPage implements OnInit {
       this.servicios = response.data?.data || [];
       console.log('✅ Servicios cargados:', this.servicios);
     } catch (error) {
-      console.error('❌ Error cargando servicios:', error);
-      const alert = await this.alertCtrl.create({
-        header: 'Error',
-        message: 'Error cargando servicios',
-        buttons: ['OK']
-      });
-      await alert.present();
+      // console.error('❌ // servicios:', error);
+      // const alert = await this.alertCtrl.create({
+      //   header: 'Error',
+      //   message: '// servicios',
+      //   buttons: ['OK']
+      // });
+      // await alert.present();
     }
   }
   mostrarFechaProgramado = false; // controla si se muestra el campo de fecha
@@ -780,10 +780,10 @@ export class ClientesPage implements OnInit {
       console.log('✅ Servicios asignados:', this.serviciossurtidos);
 
     } catch (error) {
-      console.error('❌ Error cargando servicios:', error);
+      // console.error('❌ // servicios:', error);
       // const alert = await this.alertCtrl.create({
       //   header: 'Error',
-      //   message: 'Error cargando servicios',
+      //   message: '// servicios',
       //   buttons: ['OK']
       // });
       // await alert.present();
@@ -800,17 +800,98 @@ export class ClientesPage implements OnInit {
     console.log("🚫 Servicios cancelados:", this.servicioscancelados);
 
   } catch (error) {
-    console.error("❌ Error cargando servicios cancelados:", error);
+    // console.error("❌ // servicios cancelados:", error);
     
     // const alert = await this.alertCtrl.create({
     //   header: "Error",
-    //   message: "Error cargando servicios cancelados",
+    //   message: "// servicios cancelados",
     //   buttons: ["OK"]
     // });
 
     // await alert.present();
   }
 }
+
+async cancelarServicio(servicio: any) {
+  const alert = await this.alertCtrl.create({
+    header: 'Cancelar pedido',
+    message: '¿Seguro que deseas cancelar este pedido?',
+    buttons: [
+      { text: 'No', role: 'cancel' },
+      {
+        text: 'Sí, cancelar',
+        handler: async () => {
+          try {
+           
+            const servicioId =
+              servicio.documentId ||
+              servicio.id ||
+              servicio?.attributes?.documentId ||
+              servicio?.attributes?.documentId;
+
+            if (!servicioId) {
+              console.error('❌ No se encontró ID del servicio', servicio);
+              return;
+            }
+
+            // 🔴 Buscar estado Cancelado
+            const estadoCancelado = this.estados_servicio.find(
+              e => e.tipo === 'Cancelado' || e.attributes?.tipo === 'Cancelado'
+            );
+
+            if (!estadoCancelado) {
+              const alert = await this.alertCtrl.create({
+                header: 'Error',
+                message: 'El estado "Cancelado" no existe.',
+                buttons: ['OK']
+              });
+              await alert.present();
+              return;
+            }
+
+            const estadoId =
+              estadoCancelado.documentId || estadoCancelado.id;
+
+            const data = {
+              estado_servicio: estadoId,
+              fecha_cancelado: new Date().toISOString()
+            };
+
+            console.log('🚫 Cancelando servicio:', servicioId, data);
+
+            await this.apiser.editarservicio(servicioId, data);
+
+            const success = await this.alertCtrl.create({
+              header: 'Cancelado',
+              message: 'El pedido fue cancelado correctamente.',
+              buttons: ['OK']
+            });
+            await success.present();
+
+            // 🔄 Recargar listas
+            this.verservicio();
+            this.verservicioasignados();
+            this.verservicioprogramados();
+            this.verserviciossurtidos();
+            this.verserviciocancelados();
+
+          } catch (error) {
+            console.error('❌ Error cancelando servicio:', error);
+            const alert = await this.alertCtrl.create({
+              header: 'Error',
+              message: 'No se pudo cancelar el pedido.',
+              buttons: ['OK']
+            });
+            await alert.present();
+          }
+        }
+      }
+    ]
+  });
+
+  await alert.present();
+}
+
 
 
   
