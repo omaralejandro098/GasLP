@@ -12,9 +12,7 @@
 
   <!-- ===== BOTONES (SEGMENTOS) ===== -->
   <ion-segment value="{{ segmentoActivo }}" (ionChange)="cambiarSegmento($event)">
-    <ion-segment-button value="programados">
-      <ion-label>📅 Programados</ion-label>
-    </ion-segment-button>
+    
 
     <ion-segment-button value="asignados">
       <ion-label>🚚 Asignados</ion-label>
@@ -22,6 +20,10 @@
 
     <ion-segment-button value="surtidos">
       <ion-label>✅ Surtidos</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="programados">
+      <ion-label>📅 Programados</ion-label>
     </ion-segment-button>
   </ion-segment>
 
