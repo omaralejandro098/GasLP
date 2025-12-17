@@ -49,7 +49,7 @@ export class ClientesPage implements OnInit {
   servicio: any = {
     ruta: null,
     tipo_servicio: null,
-    estado_servicio: null,
+    estado_servicio: 3,
     observacion: '',
     nota: '',
     fecha_programado: null,
