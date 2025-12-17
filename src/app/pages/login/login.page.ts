@@ -11,7 +11,7 @@ import { AuthService } from 'src/app/services/auth-service';
 })
 export class LoginPage implements OnInit {
   access_token: string = '';
-  constructor(private router: Router,private api: AuthService, private alert: AlertController, private act: ActivatedRoute) {
+  constructor(private router: Router, private api: AuthService, private alert: AlertController, private act: ActivatedRoute) {
     console.log(this.act.snapshot.queryParams)
     this.access_token = this.act.snapshot.queryParams['access_token'];
     console.log(this.access_token)
@@ -79,17 +79,39 @@ export class LoginPage implements OnInit {
 
   async saveToken(data: any) {
     try {
-      localStorage.setItem('token', data.data.jwt)
-      localStorage.setItem('user', JSON.stringify(data.data.user))
-      this.presentAlert('Exito', 'Inicio sesion exitoso', 'Bienvenido'+data.data.user.username)
-      setTimeout(()=> {
-        this.router.navigateByUrl ('/clientes')
-      }, 2000);
+      const token = data.data.jwt;
+      const user = data.data.user;
+      const username = user?.username;
 
-    }
-    catch (error) {
-      this.presentAlert('error', 'No se pudo guardar los datos de sesion', 'Intenta mas tarde')
-    }
+      localStorage.setItem('token', token);
+      localStorage.setItem('user', JSON.stringify(user));
 
+      await this.presentAlert(
+        'Éxito',
+        'Inicio de sesión exitoso',
+        'Bienvenido ' + user.username
+      );
+
+      setTimeout(() => {
+
+        // 🟡 OPERADOR → dashboard
+        if (username === 'operador') {
+          this.router.navigateByUrl('/dashboard');
+          return;
+        }
+
+        // 🟢 OTROS ROLES
+        this.router.navigateByUrl('/clientes');
+
+      }, 1500);
+
+    } catch (error) {
+      this.presentAlert(
+        'Error',
+        'No se pudo guardar la sesión',
+        'Intenta más tarde'
+      );
+    }
   }
+
 }

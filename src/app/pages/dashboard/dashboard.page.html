@@ -1,24 +1,79 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Dashboard</ion-title>
+    <ion-title>Pedidos del día</ion-title>
+
     <ion-buttons slot="end">
-      <ion-button (click)="logout()">
-        <ion-icon slot="start" name="log-out-outline"></ion-icon>
-        <ion-icon name="log-in-outline"></ion-icon>
-      </ion-button>
+      <ion-button fill="clear" (click)="logout()">Salir</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Dashboard</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
+  <!-- ===== BOTONES (SEGMENTOS) ===== -->
+  <ion-segment value="{{ segmentoActivo }}" (ionChange)="cambiarSegmento($event)">
+    <ion-segment-button value="programados">
+      <ion-label>📅 Programados</ion-label>
+    </ion-segment-button>
 
-  <div class="ion-padding">
-    <h2>Bienvenido al panel principal</h2>
-  </div>
+    <ion-segment-button value="asignados">
+      <ion-label>🚚 Asignados</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="surtidos">
+      <ion-label>✅ Surtidos</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <!-- ===== CONTENIDO ===== -->
+
+  <!-- PROGRAMADOS -->
+  <ion-list *ngIf="segmentoActivo === 'programados'">
+    <ion-item *ngFor="let s of programados">
+      <ion-label>
+        <h2>Pedido #{{ s.id }}</h2>
+        <p>Ruta: {{ s.ruta?.nombre }}</p>
+        <p>Fecha: {{ s.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="programados.length === 0">
+      <ion-label color="medium">No hay pedidos programados</ion-label>
+    </ion-item>
+  </ion-list>
+
+  <!-- ASIGNADOS -->
+  <ion-list *ngIf="segmentoActivo === 'asignados'">
+    <ion-item *ngFor="let s of asignados">
+      <ion-label>
+        <h2>Pedido #{{ s.id }}</h2>
+        <p>Ruta: {{ s.ruta?.nombre }}</p>
+        <p>Fecha: {{ s.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+      </ion-label>
+      <ion-button expand="block" fill="clear" shape="round" (click)="marcarComoSurtido(s)">
+        Surtido
+      </ion-button>
+    </ion-item>
+
+    <ion-item *ngIf="asignados.length === 0">
+      <ion-label color="medium">No hay pedidos asignados</ion-label>
+    </ion-item>
+
+  </ion-list>
+
+  <!-- SURTIDOS -->
+  <ion-list *ngIf="segmentoActivo === 'surtidos'">
+    <ion-item *ngFor="let s of surtidos">
+      <ion-label>
+        <h2>Pedido #{{ s.id }}</h2>
+        <p>Ruta: {{ s.ruta?.nombre }}</p>
+        <p>Fecha: {{ s.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item *ngIf="surtidos.length === 0">
+      <ion-label color="medium">No hay pedidos surtidos</ion-label>
+    </ion-item>
+  </ion-list>
+
 </ion-content>

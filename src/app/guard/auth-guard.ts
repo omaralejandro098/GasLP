@@ -1,47 +1,63 @@
-import { CanActivateFn } from '@angular/router';
-
-import axios, { Axios } from 'axios';
+import { CanActivateFn, Router } from '@angular/router';
+import { inject } from '@angular/core';
+import axios from 'axios';
 import { environment } from 'src/environments/environment.prod';
 
-export const authGuard: CanActivateFn = async(route, state) => {
-  let url=environment.apiUrl
-  const token =  localStorage.getItem("token");
-  if (!token) {
-    window.alert('Debes iniciar sesion para continuar');
-    window.location.href = '/login';
-    
-    return false;
-  }else{
-    try{
-      const user= await axios.get(url+'/users/me?populate=*',{
-        headers:{
-          'Authorization': 'Bearer ' + token
-        }
-        
-      });
-      if(user.data.role.type=="operador"){
-         localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      window.alert("Tu sesion ha caducado, vuelve a iniciar sesion para volver a intentarlo");
-      window.location.href = '/login'
-      return false
-        
-      }
-    console.log(user)
-    return true
-    }catch(error) {
-      localStorage.removeItem('token')
-      localStorage.removeItem('user')
-      console.log(error)
-      window.alert("Tu sesion ha caducado, vuelve a iniciar sesion para volver a intentarlo");
-      window.location.href = '/login'
-      return false
+export const authGuard: CanActivateFn = async (route, state) => {
 
-    }
+  // 🔧 Inyección correcta
+  const router = inject(Router);
+
+  // 🌐 Configuración
+  const url = environment.apiUrl;
+  const token = localStorage.getItem('token');
+  const rutaActual = state.url;
+
+  // 🔴 Sin sesión
+  if (!token) {
+    alert('Debes iniciar sesión para continuar');
+    router.navigate(['/login']);
+    return false;
   }
 
+  try {
+    // 🔍 Validar token en backend
+    const response = await axios.get(
+      `${url}/users/me?populate=*`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
 
-  window.location.href = '/login'
-  return true; 
+    const user = response.data;
+    const rol = user?.role?.type;
 
+    // 🟡 OPERADOR → solo /dashboard
+    if (rol === 'operador') {
+
+      if (rutaActual === '/dashboard') {
+        return true;
+      }
+
+      // ❌ Cualquier otra ruta
+      router.navigate(['/dashboard']);
+      return false;
+    }
+
+    // 🟢 Otros roles → acceso normal
+    return true;
+
+  } catch (error) {
+    console.error('Error en authGuard:', error);
+
+    // 🔒 Cerrar sesión
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+
+    alert('Tu sesión ha caducado, inicia sesión nuevamente');
+    router.navigate(['/login']);
+    return false;
+  }
 };

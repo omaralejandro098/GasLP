@@ -29,6 +29,14 @@ export class Servicios {
       }
     );
   }
+    async verserviciobyruta() {
+    return await axios.get(
+      `${this.apiUrl}/serviciosbyruta`,
+      {
+        headers: this.getAuthHeaders(),
+      }
+    );
+  }
 
   async verservicioasignados() {
     return await axios.get(`${this.apiUrl}/serviciosasignados`, {

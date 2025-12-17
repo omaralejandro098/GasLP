@@ -313,6 +313,7 @@ export class ClientesPage implements OnInit {
 
     // Aquí debes abrir el modal o formulario para registrar el servicio
     this.abrirFormularioServicio(dom);
+    
   }
 
   abrirFormularioServicio(domicilio: any) {
@@ -585,6 +586,7 @@ export class ClientesPage implements OnInit {
       };
 
       const response = await this.apiser.crearservicio(data);
+      await this.cargarServicios()
       if (response && response.data) {
         this.servicios.push(response.data.data);
         this.servicio = {
@@ -600,6 +602,7 @@ export class ClientesPage implements OnInit {
         console.log('✅ Servicio creado:', response.data.data);
       }
       this.cerrarModalFormularioServicio();
+      this.cerrarModalDomicilio()
     } catch (error) {
       console.error('❌ Error creando servicio:', error);
       const alert = await this.alertCtrl.create({
@@ -810,6 +813,11 @@ export class ClientesPage implements OnInit {
 
     // await alert.present();
   }
+}
+cargarServicios() {
+  this.apiser.verservicio().then((res: any) => {
+    this.servicios = res.data.data;
+  });
 }
 
 async cancelarServicio(servicio: any) {
