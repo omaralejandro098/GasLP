@@ -146,6 +146,8 @@ export class ClientesPage implements OnInit {
         this.apellidos = '';
         this.telefono = '';
         console.log('✅ Cliente agregado:', response.data.data);
+
+        await this.cargarServicios();
       }
 
       this.cerrarModal();
@@ -544,6 +546,7 @@ export class ClientesPage implements OnInit {
     if (tipoEstado === 'Programado') {
       console.log('✅ Es programado, mostrando fecha');
       this.mostrarFechaProgramado = true;
+      
     } else {
       console.log('❌ No es programado');
       this.mostrarFechaProgramado = false;
@@ -560,6 +563,7 @@ export class ClientesPage implements OnInit {
         buttons: ['OK']
       });
       await alert.present();
+      await this.cargarServicios();
       return;
     }
     // Si el estado es Programado, exigir fecha
@@ -586,7 +590,20 @@ export class ClientesPage implements OnInit {
       };
 
       const response = await this.apiser.crearservicio(data);
-      await this.cargarServicios()
+      const success = await this.alertCtrl.create({
+              header: 'Guardado',
+              message: 'El pedido fue guardado correctamente.',
+              buttons: ['OK']
+            });
+            await success.present();
+
+            // 🔄 Recargar listas
+            this.verservicio();
+            this.verservicioasignados();
+            this.verservicioprogramados();
+            this.verserviciossurtidos();
+            this.verserviciocancelados();
+     
       if (response && response.data) {
         this.servicios.push(response.data.data);
         this.servicio = {
@@ -640,7 +657,9 @@ export class ClientesPage implements OnInit {
         buttons: ['OK']
       });
       await alert.present();
+      
       return;
+      await this.cargarServicios();
     }
 
     const data: any = {
@@ -666,12 +685,19 @@ export class ClientesPage implements OnInit {
 
       console.log('✅ Respuesta del backend:', response);
 
-      const alert = await this.alertCtrl.create({
-        header: 'Éxito',
-        message: 'El servicio ha sido asignado correctamente.',
-        buttons: ['OK']
-      });
-      await alert.present();
+      const success = await this.alertCtrl.create({
+              header: 'Cancelado',
+              message: 'El pedido fue asignado correctamente.',
+              buttons: ['OK']
+            });
+            await success.present();
+
+            // 🔄 Recargar listas
+            this.verservicio();
+            this.verservicioasignados();
+            this.verservicioprogramados();
+            this.verserviciossurtidos();
+            this.verserviciocancelados();
 
       this.cerrarModalAsignarServicio();
     } catch (error: any) {
@@ -719,10 +745,12 @@ export class ClientesPage implements OnInit {
           header: 'Error',
           message: 'No se encontró el ID del servicio para actualizar.',
           buttons: ['OK']
+          
         });
         await alert.present();
         console.error("❌ No se encontró ID en el servicio:", servicio);
         return;
+        await this.cargarServicios();
       }
 
       // estado surtido
@@ -737,6 +765,7 @@ export class ClientesPage implements OnInit {
           buttons: ['OK']
         });
         await alert.present();
+        await this.cargarServicios();
         return;
       }
 
@@ -760,6 +789,7 @@ export class ClientesPage implements OnInit {
       });
 
       await alert.present();
+      await this.cargarServicios();
 
     } catch (error) {
       console.error("❌ Error marcando como surtido:", error);
@@ -854,6 +884,7 @@ async cancelarServicio(servicio: any) {
                 buttons: ['OK']
               });
               await alert.present();
+              await this.cargarServicios();
               return;
             }
 
